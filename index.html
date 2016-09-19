@@ -1,0 +1,38 @@
+<!DOCTYPE>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<title>Querious: Element Queries Demo</title>
+<style>
+  div {
+    padding: .5em;
+    margin: 1em 0;
+    border: 1px solid;
+  }
+  .data-width { background: lime; }
+  .data-height { color: red; }
+  .data-characters { background: violet; }
+  .data-children { background: gold; }
+  .data-words { background: orange; }
+</style>
+
+<div data-width=400>min-width 400px</div>
+<div data-width=300,500 data-height=50>width 300-500px, min-height 50px</div>
+<input data-characters=5,10 placeholder="5-10 Characters">
+<textarea data-words=2,7 placeholder="Type 2-7 words"></textarea>
+<div data-children=4>This <strong>div</strong> contains <u>4</u> <strong>different</strong> <u>elements</u></div>
+
+<!--
+
+This is not a serious element query plugin, just an experiment to demonstrate what the concept of element queries is about, prove how support can be written in JavaScript, and to highlight the features and limitations of such an approach.
+
+Limitations:
+
+- can only use PX units
+- can only apply one instance of each condition per element
+- doesn't support IE8, and likely some other browsers too
+
+For a more fully-featured, easier-to-use, and more powerful element query syntax check out http://elementqueries.com
+
+-->
+
+<script src=querious.js></script>
