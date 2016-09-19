@@ -1,34 +1,43 @@
 /* Querious Element Query Demo: https://github.com/tomhodgins/querious */
 
-function eq(){
+var querious = (function(){
   var queries = [
-    ['data-width','tag[j].offsetWidth'],
-    ['data-height','tag[j].offsetHeight'],
-    ['data-characters','((tag[j].value||tag[j].innerHTML).length)'],
-    ['data-children','tag[j].querySelectorAll("*").length'],
-    ['data-words','var c=0,t=tag[j].value||tag[j].innerHTML;t.replace(/\\w\\b/g,function(){c++});c']
+    ['data-width','tag.offsetWidth'],
+    ['data-height','tag.offsetHeight'],
+    ['data-characters','(tag.value||tag.innerHTML).length'],
+    ['data-words','var c=0,t=tag.value||tag.innerHTML;t.replace(/\\w\\b/g,function(){c++});c'],
+    ['data-children','tag.querySelectorAll("*").length']
   ]
-  for (var i=0; i<queries.length; i++){
-    var condition = queries[i][0],
-        test = queries[i][1],
-        tag = document.querySelectorAll('['+condition+']')
-    for (var j=0; j<tag.length; j++){
-      var unit = tag[j].getAttribute(condition).split(','),
-          min = unit[0],
-          max = unit[1]
-      if (
-        ((unit.length === 1) && (min <= eval(test)))
-        || ((unit.length === 2) && ((min <= eval(test)) && (eval(test) <= max)))
-      ){
-        tag[j].classList.add(condition)
-      } else {
-        tag[j].classList.remove(condition)
+  function scanQueries(){
+    for (var i=0; i<queries.length; i++){
+      if (document.querySelector('['+queries[i][0]+']')){
+        scanTags(i)
       }
     }
   }
-}
-window.addEventListener('load',eq)
-window.addEventListener('resize',eq)
-window.addEventListener('scroll',eq)
-document.addEventListener('keyup',eq)
-document.addEventListener('click',eq)
+  function scanTags(query){
+    var tag = document.querySelectorAll('['+queries[query][0]+']')
+    for (var i=0; i<tag.length; i++){
+      processTag(query,tag[i])
+    }
+  }
+  function processTag(query,tag){
+    var unit = tag.getAttribute(queries[query][0]).split(','),
+        condition = queries[query][0],
+        test = queries[query][1],
+        min = unit[0],
+        max = unit[1]
+    if (
+      ((unit.length === 1) && (min <= eval(test)))
+      || ((unit.length === 2) && ((min <= eval(test)) && (eval(test) <= max)))
+    ){
+      tag.classList.add(condition)
+    } else {
+      tag.classList.remove(condition)
+    }
+  }
+  window.addEventListener('load',scanQueries)
+  window.addEventListener('resize',scanQueries)
+  document.addEventListener('keyup',scanQueries)
+  document.addEventListener('click',scanQueries)
+})();
